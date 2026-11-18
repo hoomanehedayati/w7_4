@@ -1,46 +1,39 @@
 
-from dataclasses import dataclass
-
 DELIMITER = ";"
 
-@dataclass
-class TIMESTAMP:
-    weekday: str
-    hour: int
-    consumption: float
-    price: float
+def TIMESTAMP():
+    timestamp = {}
+    return timestamp
 
-def readTimestamps():
-    timestamps = []
-    file = input("Insert filename:")
-    print(f'Reading file "{file}".')
-    filehandler = open(file, "r")
+def readTimestamps(filepath, timestamps):
+    filehandler = open(filepath, "r")
     filehandler.readline()
 
     for line in filehandler:
         line = line.rstrip("\n")
         if line != "":
             columns = line.split(DELIMITER)
-            timestamp = TIMESTAMP(
-                columns[0],
-                int(columns[1]),
-                float(columns[2]),
-                float(columns[3])
-            )
+            timestamp = TIMESTAMP()
+            timestamp["weekday"] = columns[0]
+            timestamp["hour"] = int(columns[1])
+            timestamp["consumption"] = float(columns[2])
+            timestamp["price"] = float(columns[3])
             timestamps.append(timestamp)
 
     filehandler.close()
-    return timestamps
 
 def displayTimestamps(timestamps):
     print("Electricity usage:")
     for line in timestamps:
-        total = line.price * line.consumption
-        print(f"- {line.weekday} {line.hour:02d}:00, price {line.price:.2f} €, consumption {line.consumption:.2f} kWh, total {total:.2f} €")
+        total = line["price"] * line["consumption"]
+        print(f'- {line["weekday"]} {line["hour"]:02d}:00, price {line["price"]:.2f} €, consumption {line["consumption"]:.2f} kWh, total {total:.2f} €')
 
 def main():
     print("Program starting.")
-    timestamps = readTimestamps()
+    timestamps = []
+    filepath = input("Insert filename:")
+    print(f'Reading file "{filepath}".')
+    readTimestamps(filepath, timestamps)
     displayTimestamps(timestamps)
     print("Program ending.")
 
