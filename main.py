@@ -34,4 +34,5 @@ def main():
     display(file)
     print("Program ending.")
 
-main()
+if __name__ == "__main__":
+    main()
